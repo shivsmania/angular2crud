@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NewsDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TableNewsUpdate">
+    <Key>
+      <PropertyRef Name="NewsId" />
+    </Key>
+    <Property Name="NewsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="varchar" MaxLength="255" />
+    <Property Name="Exerpt" Type="varchar" MaxLength="1055" />
+    <Property Name="Source" Type="varchar(max)" />
+    <Property Name="Category" Type="varchar" MaxLength="50" />
+    <Property Name="Region" Type="varchar" MaxLength="50" />
+    <Property Name="PostedDate" Type="datetime" />
+    <Property Name="isActive" Type="bit" />
+    <Property Name="UserId" Type="int" />
+  </EntityType>
+  <EntityType Name="TableUser">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullName" Type="varchar" MaxLength="50" />
+    <Property Name="Username" Type="varchar" MaxLength="50" />
+    <Property Name="Password" Type="varchar(max)" />
+    <Property Name="Email" Type="varchar" MaxLength="255" />
+    <Property Name="Address" Type="nvarchar" MaxLength="1055" />
+    <Property Name="DisplayPic" Type="varchar(max)" />
+    <Property Name="isActive" Type="bit" />
+    <Property Name="Mobile" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_TableNewsUpdate_TableUser">
+    <End Role="TableUser" Type="Self.TableUser" Multiplicity="0..1" />
+    <End Role="TableNewsUpdate" Type="Self.TableNewsUpdate" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TableUser">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="TableNewsUpdate">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="NewsDBModelStoreContainer">
+    <EntitySet Name="TableNewsUpdate" EntityType="Self.TableNewsUpdate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TableUser" EntityType="Self.TableUser" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_TableNewsUpdate_TableUser" Association="Self.FK_TableNewsUpdate_TableUser">
+      <End Role="TableUser" EntitySet="TableUser" />
+      <End Role="TableNewsUpdate" EntitySet="TableNewsUpdate" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

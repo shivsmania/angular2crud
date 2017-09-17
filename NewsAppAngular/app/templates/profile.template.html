@@ -1,0 +1,125 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="card">
+                <img class="card-img-top" src="http://localhost:49897/Uploads/{{currentUser.DisplayPic}}" alt="Card image cap">
+                <div class="card-body">
+                    <h4 class="card-title">{{currentUser.FullName}}</h4>
+                    <p class="text-muted">{{currentUser.Username}}</p>
+                    <p class="card-text">{{currentUser.Address}}</p>
+                    <p>
+                        Email: {{currentUser.Email}}<br />
+                        Mobile No: {{currentUser.Mobile}}
+                    </p>
+                    <a href="#" class="btn btn-primary">Edit Profile</a>
+                </div>
+            </div>            
+        </div>
+        <div class="col-sm-9">
+            <ngb-alert [dismissible]="true" [type]="alertType" *ngIf="message">
+                {{message}}
+            </ngb-alert>           
+            <br />
+            <ng-container *ngFor="let news of userNews">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{news.Title}}<span class="text-muted"> ({{news.Region}})</span></h4>
+                        <h6 class="card-subtitle mb-2 text-muted">In {{news.Category}} by @{{news.TableUser.Username}} on {{news.PostedDate}}</h6>
+                        <p class="card-text">{{news.Exerpt}}</p>
+                        <a href="{{news.Source}}" class="card-link" target="_blank">Source: {{news.Source}}</a>
+                        <div *ngIf="currentUser != null">
+                            <button type="button" (click)="openEdit(editnews,news.NewsId)" class="btn btn-link" target="_blank">Edit</button>
+                            <button type="button" (click)="openDelete(deletenews,news.NewsId)" class="btn btn-link" target="_blank">Delete</button>
+                        </div>
+                    </div>
+                </div><br />
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<ng-template #editnews let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Edit News</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ngb-alert [dismissible]="true" [type]="alertType" *ngIf="message">
+            {{message}}
+        </ngb-alert>
+        <form #newsForm="ngForm" (ngSubmit)="onEditNewsSubmit()" novalidate>
+            <div class="form-group">
+                <label for="title">News Title:</label>
+                <input type="text" [(ngModel)]="newsUpdate.Title" name="Title" class="form-control" required #title="ngModel" />
+                <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-danger">
+                    Title is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="excerpt">News Body:</label>
+                <textarea [(ngModel)]="newsUpdate.Exerpt" name="Excerpt" class="form-control" rows="6" required #exerpt="ngModel"></textarea>
+                <div *ngIf="exerpt.invalid && (exerpt.dirty || exerpt.touched)" class="text-danger">
+                    News body is required.
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="category">Category:</label>
+                    <select [(ngModel)]="newsUpdate.Category" name="Category" class="form-control" required #category="ngModel">
+                        <option>--Select Category--</option>
+                        <option value="Bollywood">Bollywood</option>
+                        <option value="Hollywood">Hollywood</option>
+                        <option value="Politics">Politics</option>
+                        <option value="General">General</option>
+                        <option value="People">People</option>
+                        <option value="Health">Health</option>
+                    </select>
+                    <div *ngIf="category.invalid && (category.dirty || category.touched)" class="text-danger">
+                        category is required.
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="region">Region:</label>
+                    <select [(ngModel)]="newsUpdate.Region" name="Region" class="form-control" required #region="ngModel">
+                        <option>--Select Category--</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Telangana">Telangana</option>
+                    </select>
+                    <div *ngIf="region.invalid && (region.dirty || region.touched)" class="text-danger">
+                        region is required.
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label for="source">News Source Url:</label>
+                <input type="text" [(ngModel)]="newsUpdate.Source" name="Source" class="form-control" required #source="ngModel" />
+                <div *ngIf="source.invalid && (source.dirty || source.touched)" class="text-danger">
+                    source is required.
+                </div>
+            </div>
+            <input type="hidden" [(ngModel)]="newsUpdate.NewsId" name="NewsId" />
+            <input type="hidden" [(ngModel)]="newsUpdate.UserId" name="UserId" />
+            <input type="hidden" [(ngModel)]="newsUpdate.PostedDate" name="PostedDate" />
+            <input type="hidden" [(ngModel)]="newsUpdate.isActive" name="isActive" />
+            <button type="submit" class="btn btn-success" [disabled]="newsForm.invalid">Update News</button>
+            <button type="button" (click)="d('Cross click')" class="btn btn-default" target="_blank">Cancel</button>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #deletenews let-c="close" let-d="dismiss">    
+    <div class="modal-body text-center">        
+        <h4>Are you sure?</h4><br />
+        <div class="text-center">
+            <button type="button" (click)="onDeleteNews(id)" class="btn btn-danger" target="_blank">Delete</button>
+            <button type="button" (click)="d('Cross click')" class="btn btn-default" target="_blank">Cancel</button>
+        </div>
+    </div>
+</ng-template>

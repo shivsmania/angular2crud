@@ -1,0 +1,73 @@
+﻿<nav class="navbar navbar-expand-lg navbar-dark" style="background:#ff6a00">
+    <a class="navbar-brand" href="#">News Angular App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" [routerLinkActive]="['active']">
+                <a class="nav-link" [routerLink]="['home']">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item" [routerLinkActive]="['active']">
+                <a class="nav-link" [routerLink]="['news']">News</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav navbar-right">
+            <li *ngIf="currentUser == null" class="nav-item" [routerLinkActive]="['active']">
+                <a class="nav-link" [routerLink]="['register']">Register</a>
+            </li>
+            <li *ngIf="currentUser == null" class="nav-item" [routerLinkActive]="['active']">
+                <a class="nav-link" (click)="open(login)">Login</a>
+            </li>
+            <li *ngIf="currentUser != null" class="nav-item" [routerLinkActive]="['active']">
+                <a class="nav-link" [routerLink]="['profile']">
+                <img width="20" src='http://localhost:49897/Uploads/{{currentUser.DisplayPic}}' class="img-fluid rounded-circle" /> 
+                {{currentUser.FullName}} !</a>
+            </li>
+            <li *ngIf="currentUser != null" class="nav-item" [routerLinkActive]="['active']">
+                <a href="#" class="nav-link" (click)="logout()">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <br /><br />
+    <router-outlet></router-outlet>
+</div>
+<ng2-slim-loading-bar [color]="'black'" [height]="'4px'"></ng2-slim-loading-bar>
+
+<ng-template #login let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Login</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ngb-alert [dismissible]="true" [type]="alertType" *ngIf="message">
+            {{message}}
+        </ngb-alert>
+        <form #loginForm="ngForm" (ngSubmit)="onLoginSubmit()" novalidate>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="Username">Username:</label>
+                    <input type="text" [(ngModel)]="user.Username" name="Username" class="form-control" required #uname="ngModel" />
+                    <div *ngIf="uname.invalid && (uname.dirty || uname.touched)" class="text-danger">
+                        Username is required.
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="Password">Password:</label>
+                    <input type="password" [(ngModel)]="user.Password" name="Password" class="form-control" required #pass="ngModel" />
+                    <div *ngIf="pass.invalid && (pass.dirty || pass.touched)" class="text-danger">
+                        Password is required.
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <button type="submit" class="btn btn-success" [disabled]="loginForm.invalid">Login</button>
+        </form>
+    </div>
+</ng-template>

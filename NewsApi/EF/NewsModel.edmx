@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="NewsDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TableNewsUpdate">
+          <Key>
+            <PropertyRef Name="NewsId" />
+          </Key>
+          <Property Name="NewsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="255" />
+          <Property Name="Exerpt" Type="varchar" MaxLength="1055" />
+          <Property Name="Source" Type="varchar(max)" />
+          <Property Name="Category" Type="varchar" MaxLength="50" />
+          <Property Name="Region" Type="varchar" MaxLength="50" />
+          <Property Name="PostedDate" Type="datetime" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="UserId" Type="int" />
+        </EntityType>
+        <EntityType Name="TableUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="varchar" MaxLength="50" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar(max)" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+          <Property Name="Address" Type="nvarchar" MaxLength="1055" />
+          <Property Name="DisplayPic" Type="varchar(max)" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="Mobile" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_TableNewsUpdate_TableUser">
+          <End Role="TableUser" Type="Self.TableUser" Multiplicity="0..1" />
+          <End Role="TableNewsUpdate" Type="Self.TableNewsUpdate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TableUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="TableNewsUpdate">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NewsDBModelStoreContainer">
+          <EntitySet Name="TableNewsUpdate" EntityType="Self.TableNewsUpdate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TableUser" EntityType="Self.TableUser" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TableNewsUpdate_TableUser" Association="Self.FK_TableNewsUpdate_TableUser">
+            <End Role="TableUser" EntitySet="TableUser" />
+            <End Role="TableNewsUpdate" EntitySet="TableNewsUpdate" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NewsDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TableNewsUpdate">
+          <Key>
+            <PropertyRef Name="NewsId" />
+          </Key>
+          <Property Name="NewsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Exerpt" Type="String" MaxLength="1055" FixedLength="false" Unicode="false" />
+          <Property Name="Source" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PostedDate" Type="DateTime" Precision="3" />
+          <Property Name="isActive" Type="Boolean" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="TableUser" Relationship="NewsDBModel.FK_TableNewsUpdate_TableUser" FromRole="TableNewsUpdate" ToRole="TableUser" />
+        </EntityType>
+        <EntityType Name="TableUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="1055" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayPic" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" />
+          <NavigationProperty Name="TableNewsUpdates" Relationship="NewsDBModel.FK_TableNewsUpdate_TableUser" FromRole="TableUser" ToRole="TableNewsUpdate" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="NewsDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TableNewsUpdates" EntityType="Self.TableNewsUpdate" />
+          <EntitySet Name="TableUsers" EntityType="Self.TableUser" />
+          <AssociationSet Name="FK_TableNewsUpdate_TableUser" Association="NewsDBModel.FK_TableNewsUpdate_TableUser">
+            <End Role="TableUser" EntitySet="TableUsers" />
+            <End Role="TableNewsUpdate" EntitySet="TableNewsUpdates" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_TableNewsUpdate_TableUser">
+          <End Type="NewsDBModel.TableUser" Role="TableUser" Multiplicity="0..1" />
+          <End Type="NewsDBModel.TableNewsUpdate" Role="TableNewsUpdate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TableUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="TableNewsUpdate">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NewsDBModelStoreContainer" CdmEntityContainer="NewsDBEntities">
+          <EntitySetMapping Name="TableNewsUpdates">
+            <EntityTypeMapping TypeName="NewsDBModel.TableNewsUpdate">
+              <MappingFragment StoreEntitySet="TableNewsUpdate">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="NewsId" ColumnName="NewsId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Exerpt" ColumnName="Exerpt" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TableUsers">
+            <EntityTypeMapping TypeName="NewsDBModel.TableUser">
+              <MappingFragment StoreEntitySet="TableUser">
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="DisplayPic" ColumnName="DisplayPic" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

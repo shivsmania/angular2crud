@@ -1,0 +1,70 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-6">
+            <div class="card bg-light">
+                <div class="card-header">
+                    Register Here
+                </div>
+                <div class="card-body">
+                    <ngb-alert [dismissible]="true" [type]="alertType" *ngIf="message">
+                        {{message}}
+                    </ngb-alert>
+                    
+
+                    <form #registerForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+                        <div class="form-group">
+                            <label for="FullName">Full Name:</label>
+                            <input type="text" [(ngModel)]="user.FullName" name="FullName" class="form-control" required #fname="ngModel"/>
+                            <div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="text-danger">
+                                Fullname is required.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="Username">Username:</label>
+                                <input type="text" [(ngModel)]="user.Username" name="Username" class="form-control" required #uname="ngModel"/>
+                                <div *ngIf="uname.invalid && (uname.dirty || uname.touched)" class="text-danger">
+                                    Username is required.
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="Password">Password:</label>
+                                <input type="password" [(ngModel)]="user.Password" name="Password" class="form-control" required #pass="ngModel"/>
+                                <div *ngIf="pass.invalid && (pass.dirty || pass.touched)" class="text-danger">
+                                    Password is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Email">Email:</label>
+                            <input type="email" [(ngModel)]="user.Email" name="Email" class="form-control" required #email="ngModel"/>
+                            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+                                Email is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Address">Address:</label>
+                            <textarea id="Address" [(ngModel)]="user.Address" name="Address" class="form-control" rows="5" ></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="Mobile">Mobile:</label>
+                            <input type="tel" [(ngModel)]="user.Mobile" name="Mobile" class="form-control" required #mobile="ngModel"/>
+                            <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="text-danger">
+                                Mobile number is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="DisplayPic">Profile Pic:</label>
+                            <input type="file" #displaypic [(ngModel)]="user.DisplayPic" name="DisplayPic" class="form-control" (change)="fileChange(displaypic.files)"/>
+
+                        </div>
+                        <button type="submit" class="btn btn-success" [disabled]="registerForm.invalid">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
